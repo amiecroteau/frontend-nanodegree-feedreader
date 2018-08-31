@@ -71,7 +71,7 @@ $(function () {
 		it('menu toggles on and off', function () {
 			const body = document.querySelector('body');
 			const menu = document.querySelector('.menu-icon-link');
-			
+
 			menu.click();
 			expect(body.classList.contains('menu-hidden')).toBe(false);
 			menu.click();
@@ -80,72 +80,58 @@ $(function () {
 		});
 
 
-		
+
 
 	});
 
 	/*Write a new test suite named "Initial Entries" */
-	
-	describe('Initial Entries', function(){
+
+	describe('Initial Entries', function () {
 		/*Write a test that ensures when the loadFeed
-	 * function is called and completes its work, there is at least
-	 * a single .entry element within the .feed container.
-	 * Remember, loadFeed() is asynchronous so this test will require
-	 * the use of Jasmine's beforeEach and asynchronous done() function.
-	 */
-		
-		beforeEach(function(done){
+		 * function is called and completes its work, there is at least
+		 * a single .entry element within the .feed container.
+		 * Remember, loadFeed() is asynchronous so this test will require
+		 * the use of Jasmine's beforeEach and asynchronous done() function.
+		 */
+
+		beforeEach(function (done) {
 			loadFeed(0, done);
-			
+
 		});
-		
-		it('completes work', function(){
+
+		it('completes work', function () {
 			const feed = document.querySelector('.feed');
 			const entry = document.querySelectorAll('.feed .entry');
 			expect(entry.length > 0).toBe(true);
-						
+
 		});
-					
+
 	});
-/*Write a new test suite named "New Feed Selection" */
-	describe ('New Feed Selection', function(){
-/*  Write a test that ensures when a new feed is loaded
-	 * by the loadFeed function that the content actually changes.
-	 * Remember, loadFeed() is asynchronous.
-	 */
-	const feed = document.querySelector('.feed');
-	const firstFeed = document.querySelector('.feed').innerHTML;
-		
-		beforeEach((done)=>{
-			loadFeed(0, function(){
-				
-				loadFeed(1,done);	
-				
+	/*Write a new test suite named "New Feed Selection" */
+	describe('New Feed Selection', function () {
+		/*  Write a test that ensures when a new feed is loaded
+		 * by the loadFeed function that the content actually changes.
+		 * Remember, loadFeed() is asynchronous.
+		 */
+		let originalFeed;
+		//loading setup
+		beforeEach(function (done) {
+			loadFeed(0, function () {
+				originalFeed = $('.feed').html();
+
+				loadFeed(1, function () {
+					done();
+
+				});
 			});
-		
-		
+
 		});
-		
-		it('content changes', function (){
-		
-			Array.from(feed.children).forEach(function(entry,index){
-			expect(entry.innerText === firstFeed[index]).toBe(false);
-			});
-		
-		});
-		
-		
+
+		it('content changes',function(done){
+			let newFeed= $('.feed').html();
+			expect($('.feed').html()).not.toBe(originalFeed);
+			done();
+		})
 	});
 
-
-
-
-
-
-
-
-
-	
-
-	
-}());
+});
